@@ -24,13 +24,13 @@ MIB_IPFORWARDTABLE* InterfaceList::loadRoutingTable()
         dwRetVal = GetIpForwardTable(result, &dwSize, FALSE);
         if (dwRetVal != NO_ERROR)
         {
-            printf("Error: GetIpForwardTable failed with error %d\n", dwRetVal);
+            fprintf(stderr, "Error: GetIpForwardTable failed with error %d\n", dwRetVal);
             return NULL;
         }
     }
     else
     {
-        printf("Error: GetIpForwardTable failed with error %d\n", dwRetVal);
+        fprintf(stderr, "Error: GetIpForwardTable failed with error %d\n", dwRetVal);
         return NULL;
     }
 
@@ -46,21 +46,21 @@ PIP_ADAPTER_ADDRESSES InterfaceList::loadInterfaces()
     int ret = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, NULL, &bufferLength);
     if (ret != ERROR_BUFFER_OVERFLOW)
     {
-        printf("GetAdaptersAddresses failed: %d\n", ret);
+        fprintf(stderr, "Error: GetAdaptersAddresses failed: %d\n", ret);
         return NULL;
     }
 
     result = (PIP_ADAPTER_ADDRESSES)malloc(bufferLength);
     if (result == NULL)
     {
-        printf("malloc failed\n");
+        fprintf(stderr, "Error: InterfaceList::loadInterfaces: malloc failed\n");
         return NULL;
     }
 
     ret = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, result, &bufferLength);
     if (ret != NO_ERROR)
     {
-        printf("GetAdaptersAddresses failed: %d\n", ret);
+        fprintf(stderr, "Error: GetAdaptersAddresses failed: %d\n", ret);
         free(result);
         return NULL;
     }
@@ -127,7 +127,7 @@ PIP_ADAPTER_ADDRESSES InterfaceList::sortInterfaces(PIP_ADAPTER_ADDRESSES pAddre
         pNewNode = (PIP_ADAPTER_ADDRESSES)malloc(sizeof(_IP_ADAPTER_ADDRESSES_LH));
         if (!pNewNode)
         {
-            printf("malloc failed\n");
+            fprintf(stderr, "Error:  InterfaceList::sortInterfaces: malloc failed\n");
             return NULL;
         }
         (*count)++;
@@ -276,7 +276,7 @@ char**InterfaceList::getIPv4Mask(PIP_ADAPTER_ADDRESSES iface, DWORD *count)
     result = (char **)malloc(2*number*sizeof(char*));
     if (result == NULL)
     {
-        fprintf(stderr, "malloc error!\n");
+        fprintf(stderr, "Error: InterfaceList::getIPv4Mask malloc error!\n");
         return NULL;
     }
 
@@ -321,7 +321,7 @@ char *InterfaceList::getGateway(PIP_ADAPTER_ADDRESSES iface)
             result = (char*)malloc(INET_ADDRSTRLEN);
             if (result == NULL)
             {
-                fprintf(stderr, "malloc error!\n");
+                fprintf(stderr, "Error: InterfaceList::getGateway: malloc error!\n");
                 return NULL;
             }
 
@@ -359,7 +359,7 @@ char** InterfaceList::getDNS(PIP_ADAPTER_ADDRESSES iface, DWORD* count)
     result = (char**)malloc((*count) * sizeof(char*));
     if (result == NULL)
     {
-        fprintf(stderr, "malloc error!\n");
+        fprintf(stderr, "Error: InterfaceList::getDNS: malloc error!\n");
         return NULL;
     }
 
@@ -374,7 +374,7 @@ char** InterfaceList::getDNS(PIP_ADAPTER_ADDRESSES iface, DWORD* count)
             result[i] = (char*)malloc(INET_ADDRSTRLEN);
             if (result[i] == NULL)
             {
-                fprintf(stderr, "malloc error!\n");
+                fprintf(stderr, "Error: InterfaceList::getDNS: malloc error!\n");
                 return NULL;
             }
             inet_ntop(AF_INET, pAddr, result[i], INET_ADDRSTRLEN);

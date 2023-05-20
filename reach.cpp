@@ -73,16 +73,16 @@ int ifaceCanReach(PIP_ADAPTER_ADDRESSES pCurrAddresses, DWORD fromIP, byte fromM
 
 void usage(const char *basename)
 {
-    fprintf(stderr, "Usage: %s ip[/mask] [interface] - configure adapter to reach an IPv4\n", basename);
+    fprintf(stderr, "Usage: %s <ip>[/<mask>] [<interface>] - configure adapter to reach an IPv4\n", basename);
     fprintf(stderr, "  Add a secondary ipv4 address to Interface to reach target IP.\n");
     fprintf(stderr, "  If Interface has dhcp configuration, the configuration is first switched to static IP configuration\n");
     fprintf(stderr, "  (IP address, gateway, mask and DNS servers are preserved).\n");
     fprintf(stderr, "  Note: if IP is already reachable from Interface, no change is applied.\n\n");
 
-    fprintf(stderr, "Usage: %s dhcp [interface] - switch configuration to dhcp\n", basename);
+    fprintf(stderr, "Usage: %s dhcp [<interface>] - switch configuration to dhcp\n", basename);
     fprintf(stderr, "  The Interface is switched from static to dhcp configuration, including gateway and DNS servers.\n\n");
 
-    fprintf(stderr, "Usage: %s static [interface] - switch configuration to static from dhcp information\n", basename);
+    fprintf(stderr, "Usage: %s static [<interface>] - switch configuration to static from dhcp information\n", basename);
     fprintf(stderr, "  The Interface is switched from dhcp to static configuration, using dhcp providing information.\n\n");
 }
 
@@ -194,7 +194,7 @@ int loadParameters(int argc, char* argv[], Parameters* param)
     param->dwTargetMask = 0;
 
     // first argument
-    if ((argv[1][0] == '/') || (argv[1][0] == '-') == 0)
+    if ((argv[1][0] == '/') || (argv[1][0] == '-'))
     {
         // probably "/?" or "-h" or "--help" or similar
 #ifdef _DEBUG
