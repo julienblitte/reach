@@ -1,5 +1,5 @@
 #dim Version[4]
-#define ApplicationName 'Reach command line tool'
+#define ApplicationName 'Reach'
 #define Application32Exe 'Release32\reach32.exe'
 #define Application64Exe 'Release64\reach64.exe'
 #expr ParseVersion(Application64Exe, Version[0], Version[1], Version[2], Version[3])
